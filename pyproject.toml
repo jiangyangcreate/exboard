@@ -1,0 +1,18 @@
+[project]
+name = "exboard"
+version = "1.0.2"
+authors = [
+  { name="Allen", email="jiangyangcreate@gmail.com" },
+]
+description = "A exboard package for AIBOX"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/jiangyangcreate/exboard"
+Issues = "https://github.com/jiangyangcreate/exboard/issues"
