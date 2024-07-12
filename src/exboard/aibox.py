@@ -19,10 +19,10 @@ distribution_id, distribution_name = get_linux_distribution()
 if distribution_id is not None:
     if distribution_id == "ubuntu":
         # print("The system is running Ubuntu.")
-        from jetson import *
+        from .jetson import *
     elif distribution_id == "debian":
         # print("The system is running Debian.")
-        from rk3390 import *
+        from .rk3390 import *
     else:
         print(f"The system is running {distribution_name} ({distribution_id}).")
 else:

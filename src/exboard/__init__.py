@@ -1,1 +1,1 @@
-from aibox import *
+from .aibox import *
