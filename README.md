@@ -19,9 +19,9 @@ This Python library provides an easy-to-use interface for controlling the GPIO p
 
 We use Python code to operate sensors such as cameras, temperature sensors, and more. These sensors help us gather environmental information to make appropriate decisions.
 
-:::info
+
 For sensors other than the camera, we use the I2C protocol. The I2C protocol is a serial bus that can connect multiple devices simultaneously. We read sensor data via the I2C protocol. The relevant code must be run with `sudo` privileges.
-:::
+
 
 For detailed usage instructions, refer to the interface documentation section at the end of this document. Here, we will mainly discuss some simple examples and precautions.
 
@@ -94,9 +94,7 @@ Here is a basic example. Note that spaces are meaningful, so make it a habit not
 sudo python3 sensor.py
 ```
 
-:::tip
 All code involving sensors other than the camera needs to be run with `sudo` privileges.
-:::
 
 ### 4. Results
 
@@ -104,10 +102,6 @@ After executing the code, you will see the sensor data continuously printed in t
 
 ## Interface Documentation
 RaspberryPi-Sensor-Board Custom Interface Extension Board
-
-![Image](/AIBox/img/RaspberryPi-Sensor-Board.webp)
-
-All connectors on the RaspberryPi-Sensor-Board extension board are soldered and fixed, no plug-in operations are needed. Below is a detailed explanation of the [interface](/AIBox/exboard.py):
 
 | Sensor Name          | Interface 1 | Interface 2 | Calling Method              |
 | -------------------- | ----------- | ----------- | --------------------------- |
