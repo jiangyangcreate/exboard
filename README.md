@@ -29,10 +29,10 @@ For detailed usage instructions, refer to the interface documentation section at
 
 ### 1. Import Modules
 
-The latest version is Version: 1.0.3
+The latest version is Version: 1.0.4
 
 ```python
-sudo pip3 install exboard==1.0.3
+sudo pip3 install exboard==1.0.4
 ```
 
 When using functions, we import the specified module using the `import` keyword, or we can use `from module_name import function/class/method_name`:
