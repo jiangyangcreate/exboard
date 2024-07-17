@@ -672,9 +672,21 @@ class RGB:
         pass
 
     def set(self,data):
-        data = data + [0]*(24*3 - len(data))
+        '''
+        data: list
+         [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+         or 
+         [255, 0, 0, 0, 255, 0, 0, 0, 255]
+        '''
+        flattened_list = []
+        for tup in data:
+            try:
+                flattened_list.extend(tup)
+            except:
+                flattened_list.append(tup)
+        flattened_list = flattened_list + [0]*(24*3 - len(flattened_list))
         with smbus2.SMBus(7) as bus:
-            msg = smbus2.i2c_msg.write(0x24, [200]+data+[99])
+            msg = smbus2.i2c_msg.write(0x24, [200]+flattened_list+[99])
             bus.i2c_rdwr(msg)
 
     def close(self):
@@ -1039,5 +1051,5 @@ class Servos:
         self.y += degree
 
     def update_y(self, degree):
-        self.move_to_absolute_position(Y=self.x,Z = degree)
+        self.move_to_absolute_position(Y=self.y,Z = degree)
         self.z += degree
