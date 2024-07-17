@@ -6,6 +6,10 @@ https://github.com/jiangyangcreate/exboard
 
 This Python library provides an easy-to-use interface for controlling the GPIO pins on Jetson Orin Nano and RK3399 Pro. It simplifies the process of configuring, reading, and writing GPIO pins, making it suitable for various hardware projects and applications.
 
+You should use other Board to read ADC & I2C ，like this ：
+
+![1721198471248](image/README/1721198471248.png)
+
 ## Features
 
 - Support for Jetson Orin Nano and RK3399 Pro platforms.
@@ -101,15 +105,17 @@ All code involving sensors other than the camera needs to be run with `sudo` pri
 After executing the code, you will see the sensor data continuously printed in the terminal.
 
 ## Interface Documentation
+
 RaspberryPi-Sensor-Board Custom Interface Extension Board
+
+This is the sensor linked to my expansion board, you can use a suitable 5v sensor yourself
 
 | Sensor Name          | Interface 1 | Interface 2 | Calling Method              |
 | -------------------- | ----------- | ----------- | --------------------------- |
 | LED Ring             | D9          | D10         | RGB                         |
 | NFC                  | SDA         | SCL         | RC522                       |
 | Sound Sensor         | A0          | D22         | SoundSensor                 |
-| Air Quality Sensor (Old) | A1      | D23         | MQGasSensor                 |
-| Air Quality Sensor (New) | A2      | D24         | MQGasSensor                 |
+| Air Quality Sensor | A2      | D24         | MQGasSensor                 |
 | Photosensitive Sensor | A4         |             | PhotosensitiveSensor        |
 | Ultrasonic Sensor    | D4 (trig)   | D5 (echo)   | Ultrasound                  |
 | Camera Pan-Tilt X Axis | D12       |             | servos                      |
@@ -125,8 +131,6 @@ RaspberryPi-Sensor-Board Custom Interface Extension Board
 | Free Expansion Port Middle | A3 | D25         | Shares D25 signal with left button |
 | Free Expansion Port Upper Right | D17 |       | Determined by sensor        |
 | Free Expansion Port Lower Right | D18 |       | Determined by sensor        |
-
-The air quality sensor might be connected to `A1| D23` or `A2| D24`. To determine the exact sensor connection, you can check the MQGasSensor method and input different interface combinations to see if there is data.
 
 The `Free Expansion Port Middle` uses `A3| D25`, where D25 shares the signal line with the left button. If you connect the `Flame Sensor` to the `Free Expansion Port Middle`, this sensor has GVAD four pins, where A can return the flame size, and D can return the presence of a flame.
 
