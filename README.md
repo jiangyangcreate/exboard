@@ -2,6 +2,7 @@
 
 https://github.com/jiangyangcreate/exboard
 
+product: https://doc.qichengjia.cn/AIBox/
 ## Overview
 
 This Python library provides an easy-to-use interface for controlling the GPIO pins on Jetson Orin Nano and RK3399 Pro. It simplifies the process of configuring, reading, and writing GPIO pins, making it suitable for various hardware projects and applications.
@@ -33,10 +34,10 @@ For detailed usage instructions, refer to the interface documentation section at
 
 ### 1. Import Modules
 
-The latest version is Version: 1.0.6
+The latest version is Version: 1.0.7
 
 ```python
-sudo pip3 install exboard==1.0.6
+sudo pip3 install exboard==1.0.7
 ```
 
 When using functions, we import the specified module using the `import` keyword, or we can use `from module_name import function/class/method_name`:

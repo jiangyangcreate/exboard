@@ -817,7 +817,7 @@ class Ultrasound:
         TimeElapsed = StopTime - StartTime
         # multiply with the sonic speed (34300 cm/s)
         # and divide by 2, because there and back
-        distance = (TimeElapsed * 34300) / 2
+        distance = int(TimeElapsed * 34300) / 2
         time.sleep(0.01)
         return distance
 
@@ -883,7 +883,7 @@ class RotaryPotentionmeter:
         return self.adc.read()
 
 class MQGasSensor:
-    def __init__(self, analog_pin=1, digital_pin=23):
+    def __init__(self, analog_pin=2, digital_pin=23):
 
         self.adc = ADC(analog_pin)
     

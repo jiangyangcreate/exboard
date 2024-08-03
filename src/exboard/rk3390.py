@@ -132,7 +132,7 @@ class RC522:
 class RGB:
     def __init__(self):
         self.type='ws2812_rgb'
-        self.lenth = 16
+        self.lenth = 24
         self.frame_start = [0xDD, 0x55, 0xEE]
         self.frame_group_addr = [0x00, 0x00]
         self.frame_device_addr = [0x00, 0x01]
@@ -222,7 +222,7 @@ class Ultrasound:
         TimeElapsed = StopTime - StartTime
         # multiply with the sonic speed (34300 cm/s)
         # and divide by 2, because there and back
-        distance = (TimeElapsed * 34300) / 2
+        distance = int(TimeElapsed * 34300) / 2
     
         return distance
 
@@ -279,7 +279,7 @@ class RotaryPotentionmeter:
         return self.adc.read()
 
 class MQGasSensor:
-    def __init__(self, analog_pin=1, digital_pin=23):
+    def __init__(self, analog_pin=2, digital_pin=23):
 
         self.gpio = GPIO(digital_pin, 'in') 
         self.adc = ADC(analog_pin)
