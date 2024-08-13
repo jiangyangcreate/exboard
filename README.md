@@ -1,34 +1,47 @@
-# GPIO Control Library for Jetson Orin Nano and RK3399 Pro
+# Overview
 
-https://github.com/jiangyangcreate/exboard
+This is a hardware control library that has been verified to work with `Jetson Orin Nano` and `RK3399 Pro`
 
-product: https://doc.qichengjia.cn/AIBox/
-## Overview
+The system is Debian and automatically selects `RK3399 Pro`. In other cases, `Jetson Orin Nano` is used by default.
 
-This Python library provides an easy-to-use interface for controlling the GPIO pins on Jetson Orin Nano and RK3399 Pro. It simplifies the process of configuring, reading, and writing GPIO pins, making it suitable for various hardware projects and applications.
-
-You should use other Board to read ADC & I2C ，like this ：
+Since the main control board can only control the GPIO interface by default, in order to call more complex sensors, I connected an expansion board to unlock ADC & I2C. You can also design your own or choose other expansion boards.
 
 ![1721198471248](image/README/1721198471248.png)
 
 ## Features
 
-- Support for Jetson Orin Nano and RK3399 Pro platforms.
-- Automatic detection of the operating system (Ubuntu or Debian).
-- Easy GPIO configuration (input/output).
-- Read and write GPIO pin states.
+- Digital reading and writing and analog reading.
+
+- Supports a variety of sensors: ultrasonic, RGB light strip, NFC, USB gimbal, button knob, etc.
+
 - Clean and simple API.
 
+## Sensor list
 
-## USE
+Here are some sensors, the pin numbers of the expansion board I connected, and the class names of the corresponding control codes. There are usage instructions for the corresponding classes at the bottom.
 
-We use Python code to operate sensors such as cameras, temperature sensors, and more. These sensors help us gather environmental information to make appropriate decisions.
+| Sensor Name                     | Interface 1 | Interface 2 | Calling Method                     |
+| ------------------------------- | ----------- | ----------- | ---------------------------------- |
+| LED                             | D9          | D10         | RGB                                |
+| NFC                             | SDA         | SCL         | RC522                              |
+| Sound Sensor                    | A0          | D22         | SoundSensor                        |
+| Air Quality Sensor              | A2          | D24         | MQGasSensor                        |
+| Photosensitive Sensor           | A4          |             | PhotosensitiveSensor               |
+| Ultrasonic Sensor               | D4 (trig)   | D5 (echo)   | Ultrasound                         |
+| Camera Pan-Tilt X Axis          | D12         |             | servos                             |
+| Camera Pan-Tilt Y Axis          | D13         |             | servos                             |
+| Camera Pan-Tilt LED             | D14         |             | LED                                |
+| Left Knob                       | A5          |             | RotaryPotentionmeter               |
+| Right Knob                      | A6          |             | RotaryPotentionmeter               |
+| Left Button                     | D25         |             | GPIO                               |
+| Middle Button                   | D26         |             | GPIO                               |
+| Right Button                    | D27         |             | GPIO                               |
+| Free Expansion Port Upper Left  | D16         |             | Determined by sensor               |
+| Free Expansion Port Lower Left  | A7          |             | Determined by sensor               |
+| Free Expansion Port Middle      | A3          | D25         | Shares D25 signal with left button |
+| Free Expansion Port Upper Right | D17         |             | Determined by sensor               |
+| Free Expansion Port Lower Right | D18         |             | Determined by sensor               |
 
-
-For sensors other than the camera, we use the I2C protocol. The I2C protocol is a serial bus that can connect multiple devices simultaneously. We read sensor data via the I2C protocol. The relevant code must be run with `sudo` privileges.
-
-
-For detailed usage instructions, refer to the interface documentation section at the end of this document. Here, we will mainly discuss some simple examples and precautions.
 
 ## How to Call Sensors?
 
@@ -40,17 +53,8 @@ The latest version is Version: 1.0.8
 sudo pip3 install exboard==1.0.8
 ```
 
-When using functions, we import the specified module using the `import` keyword, or we can use `from module_name import function/class/method_name`:
-
 ```python
-from exboard import FlameSensor
-from exboard import MQGasSensor
-from exboard import PhotosensitiveSensor
-from exboard import RGB
-from exboard import Ultrasound
-from exboard import SoundSensor
-from exboard import Servos
-from exboard import RotaryPotentionmeter
+from exboard import *
 ```
 
 ### 2. Instantiate Sensors
@@ -60,10 +64,7 @@ The following code, named `sensor.py`, imports gas, photosensitive, sound, and u
 Note: Data is obtained through the `read` method. To continuously acquire data, you need to use a loop. Also, remember to add `time.sleep` to avoid data retrieval being too fast to be readable.
 
 ```python title="sensor.py"
-from exboard import MQGasSensor
-from exboard import PhotosensitiveSensor
-from exboard import Ultrasound
-from exboard import SoundSensor
+from exboard import *
 import time
 
 sensor2 = MQGasSensor()
@@ -104,41 +105,6 @@ All code involving sensors other than the camera needs to be run with `sudo` pri
 ### 4. Results
 
 After executing the code, you will see the sensor data continuously printed in the terminal.
-
-## Interface Documentation
-
-RaspberryPi-Sensor-Board Custom Interface Extension Board
-
-This is the sensor linked to my expansion board, you can use a suitable 5v sensor yourself
-
-| Sensor Name          | Interface 1 | Interface 2 | Calling Method              |
-| -------------------- | ----------- | ----------- | --------------------------- |
-| LED Ring             | D9          | D10         | RGB                         |
-| NFC                  | SDA         | SCL         | RC522                       |
-| Sound Sensor         | A0          | D22         | SoundSensor                 |
-| Air Quality Sensor | A2      | D24         | MQGasSensor                 |
-| Photosensitive Sensor | A4         |             | PhotosensitiveSensor        |
-| Ultrasonic Sensor    | D4 (trig)   | D5 (echo)   | Ultrasound                  |
-| Camera Pan-Tilt X Axis | D12       |             | servos                      |
-| Camera Pan-Tilt Y Axis | D13       |             | servos                      |
-| Camera Pan-Tilt LED  | D14         |             | LED                         |
-| Left Knob            | A5          |             | RotaryPotentionmeter        |
-| Right Knob           | A6          |             | RotaryPotentionmeter        |
-| Left Button          | D25         |             | GPIO                        |
-| Middle Button        | D26         |             | GPIO                        |
-| Right Button         | D27         |             | GPIO                        |
-| Free Expansion Port Upper Left | D16 |         | Determined by sensor        |
-| Free Expansion Port Lower Left | A7 |          | Determined by sensor        |
-| Free Expansion Port Middle | A3 | D25         | Shares D25 signal with left button |
-| Free Expansion Port Upper Right | D17 |       | Determined by sensor        |
-| Free Expansion Port Lower Right | D18 |       | Determined by sensor        |
-
-The `Free Expansion Port Middle` uses `A3| D25`, where D25 shares the signal line with the left button. If you connect the `Flame Sensor` to the `Free Expansion Port Middle`, this sensor has GVAD four pins, where A can return the flame size, and D can return the presence of a flame.
-
-Both of the following conditions will generate a signal on D25:
-
-- Pressing the left button switch
-- The flame sensor detects a flame
 
 ### GPIO
 
@@ -248,7 +214,7 @@ print(value)
 
 This class is used to handle soil moisture sensors. It receives the pin number for an
 
- analog pin and creates an `ADC` object to read the value of the pin. It has a method `read` to read the current value from the soil moisture sensor.
+analog pin and creates an `ADC` object to read the value of the pin. It has a method `read` to read the current value from the soil moisture sensor.
 
 Example:
 
