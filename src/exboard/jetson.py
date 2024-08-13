@@ -8,6 +8,7 @@ import smbus2
 
 JetsonGPIO.setwarnings(False)
 
+
 class MFRC522:
     # Define register values from datasheet
     COMMANDREG = 0x01  # Start and stops command execution
@@ -65,45 +66,337 @@ class MFRC522:
     # block, the last block of the sector, holds the access conditions and two
     # of the authentication keys for that particular sector
     MIFARE_1K_MANUFAKTURERBLOCK = [0]
-    MIFARE_1K_SECTORTRAILER = [3, 7, 11, 15, 19, 23, 27, 31, 35,
-                               39, 43, 47, 51, 55, 59, 63]
-    MIFARE_1K_DATABLOCK = [1, 2, 4, 5, 6, 8, 9, 10, 12, 13,
-                           14, 16, 17, 18, 20, 21, 22,  24,  25,  26,
-                           28, 29, 30, 32, 33, 34, 36,  37,  38,  40,
-                           41, 42, 44, 45, 46, 48, 49,  50,  52,  53,
-                           54, 56, 57, 58, 60, 61, 62]
+    MIFARE_1K_SECTORTRAILER = [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39,
+        43,
+        47,
+        51,
+        55,
+        59,
+        63,
+    ]
+    MIFARE_1K_DATABLOCK = [
+        1,
+        2,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        24,
+        25,
+        26,
+        28,
+        29,
+        30,
+        32,
+        33,
+        34,
+        36,
+        37,
+        38,
+        40,
+        41,
+        42,
+        44,
+        45,
+        46,
+        48,
+        49,
+        50,
+        52,
+        53,
+        54,
+        56,
+        57,
+        58,
+        60,
+        61,
+        62,
+    ]
 
     # Mifare 4K EEPROM is arranged of 40 sectors. From sector 0 to 31, memory
     # organization is similar to Mifare 1K, each sector has 4 blocks. From
     # sector 32 to 39, each sector has 16 blocks
     MIFARE_4K_MANUFAKTURERBLOCK = [0]
-    MIFARE_4K_SECTORTRAILER = [3, 7, 11, 15, 19, 23, 27, 31, 35, 39,
-                               43, 47, 51, 55, 59, 63, 67, 71, 75, 79,
-                               83, 87, 91, 95, 99, 103, 107, 111, 115, 119,
-                               123, 127, 143, 159, 175, 191, 207, 223, 239,
-                               255]
-    MIFARE_4K_DATABLOCK = [1,  2, 4, 5, 6, 8, 9, 10, 12, 13,
-                           14, 16, 17, 18, 20, 21, 22, 24, 25, 26,
-                           28, 29, 30, 32, 33, 34, 36, 37, 38, 40,
-                           41, 42, 44, 45, 46, 48, 49, 50, 52, 53,
-                           54, 56, 57, 58, 60, 61, 62, 64, 65, 66,
-                           68, 69, 70, 72, 73, 74, 76, 77, 78, 80,
-                           81, 82, 84, 85, 86, 88, 89, 90, 92, 93,
-                           94, 96, 97, 98, 100, 101, 102, 104, 105, 106,
-                           108, 109, 110, 112, 113, 114, 116, 117, 118, 120,
-                           121, 122, 124, 125, 126, 128, 129, 130, 131, 132,
-                           133, 134, 135, 136, 137, 138, 139, 140, 141, 142,
-                           144, 145, 146, 147, 148, 149, 150, 151, 152, 153,
-                           154, 155, 156, 157, 158, 160, 161, 162, 163, 164,
-                           165, 166, 167, 168, 169, 170, 171, 172, 173, 174,
-                           176, 177, 178, 179, 180, 181, 182, 183, 184, 185,
-                           186, 187, 188, 189, 190, 192, 193, 194, 195, 196,
-                           197, 198, 199, 200, 201, 202, 203, 204, 205, 206,
-                           208, 209, 210, 211, 212, 213, 214, 215, 216, 217,
-                           218, 219, 220, 221, 222, 224, 225, 226, 227, 228,
-                           229, 230, 231, 232, 233, 234, 235, 236, 237, 238,
-                           240, 241, 242, 243, 244, 245, 246, 247, 248, 249,
-                           250, 251, 252, 253, 254]
+    MIFARE_4K_SECTORTRAILER = [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39,
+        43,
+        47,
+        51,
+        55,
+        59,
+        63,
+        67,
+        71,
+        75,
+        79,
+        83,
+        87,
+        91,
+        95,
+        99,
+        103,
+        107,
+        111,
+        115,
+        119,
+        123,
+        127,
+        143,
+        159,
+        175,
+        191,
+        207,
+        223,
+        239,
+        255,
+    ]
+    MIFARE_4K_DATABLOCK = [
+        1,
+        2,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        24,
+        25,
+        26,
+        28,
+        29,
+        30,
+        32,
+        33,
+        34,
+        36,
+        37,
+        38,
+        40,
+        41,
+        42,
+        44,
+        45,
+        46,
+        48,
+        49,
+        50,
+        52,
+        53,
+        54,
+        56,
+        57,
+        58,
+        60,
+        61,
+        62,
+        64,
+        65,
+        66,
+        68,
+        69,
+        70,
+        72,
+        73,
+        74,
+        76,
+        77,
+        78,
+        80,
+        81,
+        82,
+        84,
+        85,
+        86,
+        88,
+        89,
+        90,
+        92,
+        93,
+        94,
+        96,
+        97,
+        98,
+        100,
+        101,
+        102,
+        104,
+        105,
+        106,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        116,
+        117,
+        118,
+        120,
+        121,
+        122,
+        124,
+        125,
+        126,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+    ]
 
     MIFARE_KEY = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
@@ -123,15 +416,15 @@ class MFRC522:
 
         # Retrieve version from VERSIONREG
         version = self.__MFRC522_read(self.VERSIONREG)
-        if (version == 0x91):
-            version = 'v1.0'
-        if (version == 0x92):
-            version = 'v2.0'
+        if version == 0x91:
+            version = "v1.0"
+        if version == 0x92:
+            version = "v2.0"
 
-        return (version)
+        return version
 
     def scan(self):
-        """ Scans for a card and returns the UID"""
+        """Scans for a card and returns the UID"""
         status = None
         backData = []
         backBits = None
@@ -144,26 +437,26 @@ class MFRC522:
 
         (status, backData, backBits) = self.__transceiveCard(buffer)
 
-        if ((status != self.MIFARE_OK) | (backBits != 0x10)):
+        if (status != self.MIFARE_OK) | (backBits != 0x10):
             status = self.MIFARE_ERR
 
         return (status, backData, backBits)
 
     def __serialNumberValid(self, serialNumber):
-        """ Checks if the serial number is valid """
+        """Checks if the serial number is valid"""
         i = 0
         serialCheck = 0
 
-        while (i < (len(serialNumber) - 1)):
+        while i < (len(serialNumber) - 1):
             serialCheck = serialCheck ^ serialNumber[i]
             i = i + 1
-        if (serialCheck != serialNumber[i]):
+        if serialCheck != serialNumber[i]:
             return False
         else:
             return True
 
     def identify(self):
-        """ Receives the serial number of the card"""
+        """Receives the serial number of the card"""
         status = None
         backData = []
         backBits = None
@@ -176,8 +469,8 @@ class MFRC522:
 
         (status, backData, backBits) = self.__transceiveCard(buffer)
 
-        if (status == self.MIFARE_OK):
-            if (self.__serialNumberValid(backData)):
+        if status == self.MIFARE_OK:
+            if self.__serialNumberValid(backData):
                 status = self.MIFARE_OK
             else:
                 status = self.MIFARE_ERR
@@ -185,7 +478,7 @@ class MFRC522:
         return (status, backData, backBits)
 
     def __transceiveCard(self, data):
-        """ Transceives data trough the reader/writer from and to the card """
+        """Transceives data trough the reader/writer from and to the card"""
         status = None
         backData = []
         backBits = None
@@ -197,13 +490,10 @@ class MFRC522:
         LoAlertIEn = 0x04  # Allow the low Alert interrupt request
         ErrIEn = 0x02  # Allow the error interrupt request
         TimerIEn = 0x01  # Allow the timer interrupt request
-        self.__MFRC522_write(self.COMIENREG, (IRqInv |
-                                              TxIEn |
-                                              RxIEn |
-                                              IdleIEn |
-                                              LoAlertIEn |
-                                              ErrIEn |
-                                              TimerIEn))
+        self.__MFRC522_write(
+            self.COMIENREG,
+            (IRqInv | TxIEn | RxIEn | IdleIEn | LoAlertIEn | ErrIEn | TimerIEn),
+        )
 
         # Indicates that the bits in the ComIrqReg register are set
         Set1 = 0x80
@@ -241,16 +531,16 @@ class MFRC522:
         i = 2000
         while True:
             comIRqReg = self.__MFRC522_read(self.COMIRQREG)
-            if (comIRqReg & TimerIRq):
+            if comIRqReg & TimerIRq:
                 # Timeout
                 break
-            if (comIRqReg & RxIRq):
+            if comIRqReg & RxIRq:
                 # Valid data available in FIFO
                 break
-            if (comIRqReg & IdleIRq):
+            if comIRqReg & IdleIRq:
                 # Command terminate
                 break
-            if (i == 0):
+            if i == 0:
                 # Watchdog expired
                 break
             i -= 1
@@ -259,7 +549,7 @@ class MFRC522:
         self.__MFRC522_clearBitMask(self.BITFRAMINGREG, StartSend)
 
         # Retrieve data from FIFODATAREG
-        if (i != 0):
+        if i != 0:
             # The host or a MFRC522's internal state machine tries to write
             # data to the FIFO buffer even though it is already full
             BufferOvfl = 0x10
@@ -270,18 +560,18 @@ class MFRC522:
             # Set to logic 1 if the SOF is incorrect
             ProtocolErr = 0x01
 
-            errorTest = (BufferOvfl | ColErr | ParityErr | ProtocolErr)
+            errorTest = BufferOvfl | ColErr | ParityErr | ProtocolErr
             errorReg = self.__MFRC522_read(self.ERRORREG)
 
             # Test if any of the errors above happend
-            if (~(errorReg & errorTest)):
+            if ~(errorReg & errorTest):
                 status = self.MIFARE_OK
 
                 # Indicates any error bit in thr ErrorReg register is set
                 ErrIRq = 0x02
 
                 # Test if the timer expired and an error occured
-                if (comIRqReg & TimerIRq & ErrIRq):
+                if comIRqReg & TimerIRq & ErrIRq:
                     status = self.MIFARE_NOTAGERR
 
                 fifoLevelReg = self.__MFRC522_read(self.FIFOLEVELREG)
@@ -297,7 +587,7 @@ class MFRC522:
 
                 lastBits = self.__MFRC522_read(self.CONTROLREG) & RxLastBits
 
-                if (lastBits != 0):
+                if lastBits != 0:
                     backBits = (fifoLevelReg - 1) * 8 + lastBits
                 else:
                     backBits = fifoLevelReg * 8
@@ -312,7 +602,7 @@ class MFRC522:
         return (status, backData, backBits)
 
     def __calculateCRC(self, data):
-        """ Uses the reader/writer to calculate CRC """
+        """Uses the reader/writer to calculate CRC"""
         # Clear the bit that indicates taht the CalcCRC command is active
         # and all data is processed
         CRCIRq = 0x04
@@ -325,7 +615,7 @@ class MFRC522:
 
         # Write data to FIFO
         i = 0
-        while (i < len(data)):
+        while i < len(data):
             self.__MFRC522_write(self.FIFODATAREG, data[i])
             i = i + 1
 
@@ -335,10 +625,10 @@ class MFRC522:
         while True:
             divirqreg = self.__MFRC522_read(self.DIVIRQREG)
             i = i - 1
-            if (i == 0):
+            if i == 0:
                 # Watchdog expired
                 break
-            if (divirqreg & CRCIRq):
+            if divirqreg & CRCIRq:
                 # CRC is calculated
                 break
 
@@ -347,10 +637,10 @@ class MFRC522:
         crc.append(self.__MFRC522_read(self.CRCRESULTREGLSB))
         crc.append(self.__MFRC522_read(self.CRCRESULTREGMSB))
 
-        return (crc)
+        return crc
 
     def select(self, serialNumber):
-        """ Selects a card with a given serial number """
+        """Selects a card with a given serial number"""
         status = None
         backData = []
         backBits = None
@@ -359,7 +649,7 @@ class MFRC522:
         buffer.extend(self.MIFARE_SELECTCL1)
 
         i = 0
-        while (i < 5):
+        while i < 5:
             buffer.append(serialNumber[i])
             i = i + 1
 
@@ -371,7 +661,7 @@ class MFRC522:
         return (status, backData, backBits)
 
     def authenticate(self, mode, blockAddr, key, serialNumber):
-        """ Authenticates the card """
+        """Authenticates the card"""
         status = None
         backData = []
         backBits = None
@@ -382,7 +672,7 @@ class MFRC522:
         buffer.extend(key)
 
         i = 0
-        while (i < 4):
+        while i < 4:
             buffer.append(serialNumber[i])
             i = i + 1
 
@@ -391,7 +681,7 @@ class MFRC522:
         return (status, backData, backBits)
 
     def deauthenticate(self):
-        """ Deauthenticates the card """
+        """Deauthenticates the card"""
         # Indicates that the MIFARE Crypto1 unit is switched on and
         # therfore all data communication with the card is encrypted
         # Can ONLY be set to logic 1 by a successfull execution of
@@ -423,7 +713,7 @@ class MFRC522:
 
         # Write data in FIFO register
         i = 0
-        while (i < len(data)):
+        while i < len(data):
             self.__MFRC522_write(self.FIFODATAREG, data[i])
             i = i + 1
 
@@ -442,16 +732,16 @@ class MFRC522:
         i = 2000
         while True:
             comIRqReg = self.__MFRC522_read(self.COMIRQREG)
-            if (comIRqReg & TimerIRq):
+            if comIRqReg & TimerIRq:
                 # Timeout
                 break
-            if (comIRqReg & RxIRq):
+            if comIRqReg & RxIRq:
                 # Valid data available in FIFO
                 break
-            if (comIRqReg & IdleIRq):
+            if comIRqReg & IdleIRq:
                 # Command terminate
                 break
-            if (i == 0):
+            if i == 0:
                 # Watchdog expired
                 break
             i -= 1
@@ -461,7 +751,7 @@ class MFRC522:
         self.__MFRC522_clearBitMask(self.BITFRAMINGREG, StartSend)
 
         # Retrieve data from FIFODATAREG
-        if (i != 0):
+        if i != 0:
             # The host or a MFRC522's internal state machine tries to write
             # data to the FIFO buffer even though it is already full
             BufferOvfl = 0x10
@@ -472,18 +762,18 @@ class MFRC522:
             # Set to logic 1 if the SOF is incorrect
             ProtocolErr = 0x01
 
-            errorTest = (BufferOvfl | ColErr | ParityErr | ProtocolErr)
+            errorTest = BufferOvfl | ColErr | ParityErr | ProtocolErr
             errorReg = self.__MFRC522_read(self.ERRORREG)
 
             # Test if any of the errors above happend
-            if (~(errorReg & errorTest)):
+            if ~(errorReg & errorTest):
                 status = self.MIFARE_OK
 
                 # Indicates any error bit in thr ErrorReg register is set
                 ErrIRq = 0x02
 
                 # Test if the timer expired and an error occured
-                if (comIRqReg & TimerIRq & ErrIRq):
+                if comIRqReg & TimerIRq & ErrIRq:
                     status = self.MIFARE_NOTAGERR
 
             else:
@@ -492,7 +782,7 @@ class MFRC522:
         return (status, backData, backBits)
 
     def read(self, blockAddr):
-        """ Reads data from the card """
+        """Reads data from the card"""
         status = None
         backData = []
         backBits = None
@@ -509,7 +799,7 @@ class MFRC522:
         return (status, backData, backBits)
 
     def write(self, blockAddr, data):
-        """ Writes data to the card """
+        """Writes data to the card"""
         status = None
         backData = []
         backBits = None
@@ -523,7 +813,7 @@ class MFRC522:
 
         (status, backData, backBits) = self.__transceiveCard(buffer)
 
-        if (status == self.MIFARE_OK):
+        if status == self.MIFARE_OK:
 
             buffer.clear()
             buffer.extend(data)
@@ -536,21 +826,21 @@ class MFRC522:
         return (status, backData, backBits)
 
     def __MFRC522_antennaOn(self):
-        """ Activates the reader/writer antenna """
+        """Activates the reader/writer antenna"""
         value = self.__MFRC522_read(self.TXCONTROLREG)
-        if (~(value & 0x03)):
+        if ~(value & 0x03):
             self.__MFRC522_setBitMask(self.TXCONTROLREG, 0x03)
 
     def __MFRC522_antennaOff(self):
-        """ Deactivates the reader/writer antenna """
+        """Deactivates the reader/writer antenna"""
         self.__MFRC522_clearBitMask(self.TXCONTROLREG, 0x03)
 
     def __MFRC522_reset(self):
-        """ Resets the reader/writer """
+        """Resets the reader/writer"""
         self.__MFRC522_write(self.COMMANDREG, self.MFRC522_SOFTRESET)
 
     def __MFRC522_init(self):
-        """ Initialization sequence"""
+        """Initialization sequence"""
         self.__MFRC522_reset()
 
         # Timer starts automatically at the end of the transmission in all
@@ -584,34 +874,31 @@ class MFRC522:
         # Defines the preset value for the CRC coprocessor for the CalcCRC
         # command
         CRCPreset = 0x01
-        self.__MFRC522_write(self.MODEREG, ((ResetVal &
-                                             FeatureMask) |
-                                            TxWaitRF |
-                                            PolMFin |
-                                            CRCPreset))
+        self.__MFRC522_write(
+            self.MODEREG, ((ResetVal & FeatureMask) | TxWaitRF | PolMFin | CRCPreset)
+        )
 
         # Activate antenna
         self.__MFRC522_antennaOn()
 
     def __MFRC522_read(self, address):
-        """ Read data from an address on the i2c bus """
+        """Read data from an address on the i2c bus"""
         value = self.i2cBus.read_byte_data(self.i2cAddress, address)
         return value
 
     def __MFRC522_write(self, address, value):
-        """ Write data on an address on the i2c bus """
+        """Write data on an address on the i2c bus"""
         self.i2cBus.write_byte_data(self.i2cAddress, address, value)
 
     def __MFRC522_setBitMask(self, address, mask):
-        """ Set bits according to a mask on a address on the i2c bus """
+        """Set bits according to a mask on a address on the i2c bus"""
         value = self.__MFRC522_read(address)
         self.__MFRC522_write(address, value | mask)
 
     def __MFRC522_clearBitMask(self, address, mask):
-        """ Resets bits according to a mask on a address on the i2c bus """
+        """Resets bits according to a mask on a address on the i2c bus"""
         value = self.__MFRC522_read(address)
         self.__MFRC522_write(address, value & (~mask))
-
 
 
 class RC522:
@@ -623,7 +910,7 @@ class RC522:
     def scan(self):
         (status, backData, tagType) = self.MFRC522Reader.scan()
         if status == self.MFRC522Reader.MIFARE_OK:
-            print(f'Card detected, Type: {tagType}')
+            print(f"Card detected, Type: {tagType}")
 
             # Get UID of the card
             (status, uid, backBits) = self.MFRC522Reader.identify()
@@ -631,10 +918,10 @@ class RC522:
                 return (tagType, uid)
             else:
                 return (tagType, None)
-        
+
         return (None, None)
 
-    def read (self, uid:list, blockAddr:int):
+    def read(self, uid: list, blockAddr: int):
         # Select the scanned card
         (status, backData, backBits) = self.MFRC522Reader.select(uid)
         if status == self.MFRC522Reader.MIFARE_OK:
@@ -643,12 +930,12 @@ class RC522:
                 self.MFRC522Reader.MIFARE_AUTHKEY1,
                 blockAddr,
                 self.MFRC522Reader.MIFARE_KEY,
-                uid)
-            if (status == self.MFRC522Reader.MIFARE_OK):
+                uid,
+            )
+            if status == self.MFRC522Reader.MIFARE_OK:
                 # Read data from card
-                (status, backData, backBits) =self.MFRC522Reader.read(
-                    blockAddr)
-                if (status == self.MFRC522Reader.MIFARE_OK):
+                (status, backData, backBits) = self.MFRC522Reader.read(blockAddr)
+                if status == self.MFRC522Reader.MIFARE_OK:
                     return backData
                 else:
                     print("read: read error")
@@ -659,129 +946,57 @@ class RC522:
         else:
             print("read: card miss")
 
-    def write(self, blockAddr:int, data:list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]):
+    def write(
+        self,
+        blockAddr: int,
+        data: list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ):
         """
+        不同卡的自身限制会使得部分分区不可写
         blockAddr: 1-15
         data:list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         """
         return self.MFRC522Reader.write(blockAddr, data)
+
 
 class RGB:
 
     def __init__(self):
         pass
 
-    def set(self,data):
-        '''
+    def set(self, data):
+        """
         data: list
          [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
-         or 
+         or
          [255, 0, 0, 0, 255, 0, 0, 0, 255]
-        '''
+        """
         flattened_list = []
         for tup in data:
             try:
                 flattened_list.extend(tup)
             except:
                 flattened_list.append(tup)
-        flattened_list = flattened_list + [0]*(24*3 - len(flattened_list))
+        flattened_list = flattened_list + [0] * (24 * 3 - len(flattened_list))
         with smbus2.SMBus(7) as bus:
-            msg = smbus2.i2c_msg.write(0x24, [200]+flattened_list+[99])
+            msg = smbus2.i2c_msg.write(0x24, [200] + flattened_list + [99])
             bus.i2c_rdwr(msg)
 
     def close(self):
         with smbus2.SMBus(7) as bus:
-            msg = smbus2.i2c_msg.write(0x24, [200]+[0,0,0]*24+[99])
+            msg = smbus2.i2c_msg.write(0x24, [200] + [0, 0, 0] * 24 + [99])
             bus.i2c_rdwr(msg)
 
-class ADC:
-    """
-    此类用于处理模拟到数字转换器（ADC）。它接收一个引脚编号，并创建一个 I2C 对象来读取 ADC 的值。
-    """
-    
-    SUBLINE = 7      # 固定的总线编号
-    SUBPIN = 0x24    # 固定的设备地址
-    BASE_ADDR = 0x10 # 基地址
-    DEFAULT_FUNCTION = 1  # 默认的功能码 (读取 ADC 原始数据)
-
-    def __init__(self, channel, function=DEFAULT_FUNCTION):
-        """
-        初始化 ADC。
-
-        :param channel: 引脚序号 (0 表示 A0, 1 表示 A1, ... 7 表示 A7)
-        :param function: 功能码 (默认是 1 表示读取 ADC 原始数据, 可选值: 1 表示读取 ADC 原始数据, 2 表示读取输入电压, 3 表示读取输入输出电压比)
-        """
-        self.adcpin = (ADC.BASE_ADDR + channel)+ (function-1)*16
-        self.bus = smbus.SMBus(ADC.SUBLINE)
-
-    def read(self):
-        """
-        读取 ADC 的当前值。
-
-        :return: ADC 当前值
-        """
-        value = self.bus.read_word_data(ADC.SUBPIN, self.adcpin)
-        return value
-
-class GPIO:
-    """
-    此类用于处理通用输入/输出（GPIO）引脚。它接收一个引脚编号和其他参数 'out' 或 'in'，
-    并返回一个 GPIO 对象。GPIO 可进行的操作有：
-
-    write(value)：写入一个布尔值
-    read()：读取当前引脚的值
-    cleanup()：清理引脚
-    """
-    
-    def __init__(self, channel, direction, initial=None):
-        """
-        初始化 GPIO 引脚。
-
-        :param channel: GPIO 引脚编号
-        :param direction: 'out' 或 'in'
-        :param initial: 初始值 (仅适用于输出引脚)
-        """
-        self.channel = channel
-        self.direction = JetsonGPIO.OUT if direction == 'out' else JetsonGPIO.IN
-        JetsonGPIO.setmode(JetsonGPIO.BCM)  # 默认使用 BOARD 模式
-        if initial is not None and self.direction == JetsonGPIO.OUT:
-            JetsonGPIO.setup(self.channel, self.direction, initial=initial)
-        else:
-            JetsonGPIO.setup(self.channel, self.direction)
-
-    def write(self, value):
-        """
-        写入一个布尔值到 GPIO 引脚 (仅适用于输出引脚)。
-
-        :param value: 布尔值 (True 或 False)
-        """
-        if self.direction == JetsonGPIO.OUT:
-            JetsonGPIO.output(self.channel, JetsonGPIO.HIGH if value else JetsonGPIO.LOW)
-        else:
-            raise ValueError("Can't write to an input GPIO")
-
-    def read(self):
-        """
-        读取当前 GPIO 引脚的值。
-
-        :return: 布尔值 (True 或 False)
-        """
-        return JetsonGPIO.input(self.channel) == JetsonGPIO.HIGH
-
-    def cleanup(self):
-        """
-        清理 GPIO 引脚。
-        """
-        JetsonGPIO.cleanup(self.channel)
 
 class Ultrasound:
-    '''
+    """
     最大测距理论值小于343
-    '''
+    """
+
     def __init__(self, trigger_pin=4, echo_pin=5, max_cm=None, timeout=0.1):
-        #set GPIO Pins
-        self.trigger = GPIO(trigger_pin, 'out')
-        self.echo = GPIO(echo_pin, 'in')
+        # set GPIO Pins
+        self.trigger = GPIO(trigger_pin, "out")
+        self.echo = GPIO(echo_pin, "in")
         self.max_cm = max_cm
         self.timeout = timeout  # 超时时间（秒）
 
@@ -789,15 +1004,15 @@ class Ultrasound:
         # set Trigger to HIGH
         # GPIO.output(GPIO_TRIGGER, True)
         self.trigger.write(True)
-    
+
         # set Trigger after 0.01ms to LOW
         time.sleep(0.00001)
         # GPIO.output(GPIO_TRIGGER, False)
         self.trigger.write(False)
-    
+
         StartTime = time.time()
         StopTime = time.time()
-    
+
         # save StartTime
         start_time = time.time()  # 记录开始时间
         while self.echo.read() == 0:
@@ -821,77 +1036,157 @@ class Ultrasound:
         time.sleep(0.01)
         return distance
 
+
+class ADC:
+    """
+    此类用于处理模拟到数字转换器（ADC）。它接收一个引脚编号，并创建一个 I2C 对象来读取 ADC 的值。
+    """
+
+    SUBLINE = 7  # 固定的总线编号
+    SUBPIN = 0x24  # 固定的设备地址
+    BASE_ADDR = 0x10  # 基地址
+    DEFAULT_FUNCTION = 1  # 默认的功能码 (读取 ADC 原始数据)
+
+    def __init__(self, channel, function=DEFAULT_FUNCTION):
+        """
+        初始化 ADC。
+        :param channel: 引脚序号 (0 表示 A0, 1 表示 A1, ... 7 表示 A7)
+        :param function: 功能码 (默认是 1 表示读取 ADC 原始数据, 可选值: 1 表示读取 ADC 原始数据, 2 表示读取输入电压, 3 表示读取输入输出电压比)
+        """
+        self.adcpin = (ADC.BASE_ADDR + channel) + (function - 1) * 16
+        self.bus = smbus.SMBus(ADC.SUBLINE)
+
+    def read(self):
+        """
+        读取 ADC 的当前值。
+        """
+        return self.bus.read_word_data(ADC.SUBPIN, self.adcpin)
+
+
+class GPIO:
+    """
+    此类用于处理通用输入/输出（GPIO）引脚。它接收一个引脚编号和其他参数 'out' 或 'in'，
+    并返回一个 GPIO 对象。GPIO 可进行的操作有：
+
+    write(value)：写入一个布尔值
+    read()：读取当前引脚的值
+    cleanup()：清理引脚
+    """
+
+    def __init__(self, channel, direction, initial=None):
+        """
+        初始化 GPIO 引脚。
+
+        :param channel: GPIO 引脚编号
+        :param direction: 'out' 或 'in'
+        :param initial: 初始值 (仅适用于输出引脚)
+        """
+        self.channel = channel
+        self.direction = JetsonGPIO.OUT if direction == "out" else JetsonGPIO.IN
+        JetsonGPIO.setmode(JetsonGPIO.BCM)  # 默认使用 BOARD 模式
+        if initial is not None and self.direction == JetsonGPIO.OUT:
+            JetsonGPIO.setup(self.channel, self.direction, initial=initial)
+        else:
+            JetsonGPIO.setup(self.channel, self.direction)
+
+    def write(self, value):
+        """
+        写入一个布尔值到 GPIO 引脚 (仅适用于输出引脚)。
+
+        :param value: 布尔值 (True 或 False)
+        """
+        if self.direction == JetsonGPIO.OUT:
+            JetsonGPIO.output(
+                self.channel, JetsonGPIO.HIGH if value else JetsonGPIO.LOW
+            )
+        else:
+            raise ValueError("Can't write to an input GPIO")
+
+    def read(self):
+        """
+        读取当前 GPIO 引脚的值。
+
+        :return: 布尔值 (True 或 False)
+        """
+        return JetsonGPIO.input(self.channel) == JetsonGPIO.HIGH
+
+    def cleanup(self):
+        """
+        清理 GPIO 引脚。
+        """
+        JetsonGPIO.cleanup(self.channel)
+
+
 class LED:
     def __init__(self, pin):
-        self.GPIO = GPIO(pin, 'out')
-    
+        self.GPIO = GPIO(pin, "out")
+
     def on(self):
         self.GPIO.write(True)
-    
+
     def off(self):
         self.GPIO.write(False)
 
 
-class SoundSensor:
-    def __init__(self, analog_pin=0,digital_pin=0):
-        self.adc = ADC(analog_pin)
-    
-    def read(self):
-        value = self.adc.read()
-        signal = value > 200
-
-        return (signal, value)
-
-class PhotosensitiveSensor:
+class PhotosensitiveSensor(ADC):
     def __init__(self, analog_pin=4):
-        self.adc = ADC(analog_pin)
-    
-    def read(self):
-        return self.adc.read()
+        super().__init__(analog_pin=analog_pin)
 
-class SoilMoistureSensor:
+class SoilMoistureSensor(ADC):
     def __init__(self, analog_pin=5):
-        self.adc = ADC(analog_pin)
-    
-    def read(self):
-        return self.adc.read()
+        super().__init__(analog_pin=analog_pin)
 
-class WaterDepthSensor:
+
+class WaterDepthSensor(ADC):
     def __init__(self, analog_pin=7):
-        self.adc = ADC(analog_pin)
-    
-    def read(self):
-        return self.adc.read()
+        super().__init__(analog_pin=analog_pin)
 
+class RotaryPotentionmeter(ADC):
+    def __init__(self, analog_pin=6):
+        super().__init__(analog_pin=analog_pin)
+class SoundSensor:
+    THRESHOLD = 200  # 声音传感器的阈值
+    
+    def __init__(self, analog_pin=0, digital_pin=0):
+        self.adc = ADC(analog_pin)
+
+    def read(self):
+        """
+        读取声音传感器的值。
+
+        :return: (信号是否检测到, 原始 ADC 值)
+        """
+        value = self.adc.read()
+        signal = value > SoundSensor.THRESHOLD
+        return signal, value
 class FlameSensor:
     def __init__(self, analog_pin=2, digital_pin=24):
 
-        self.gpio = GPIO(digital_pin, 'in') 
+        self.gpio = GPIO(digital_pin, "in")
         self.adc = ADC(analog_pin)
-    
+
     def read(self):
         signal = self.gpio.read()
         value = self.adc.read()
+        return signal, value
 
-        return (not signal, value)
-
-class RotaryPotentionmeter:
-    def __init__(self, analog_pin=6):
-        self.adc = ADC(analog_pin)
-    
-    def read(self):
-        return self.adc.read()
 
 class MQGasSensor:
-    def __init__(self, analog_pin=2, digital_pin=23):
+    THRESHOLD = 200  # MQ气体传感器的阈值
 
+    def __init__(self, analog_pin=2):
         self.adc = ADC(analog_pin)
-    
-    def read(self):
-        value = self.adc.read()
-        signal = value < 200
 
-        return (not signal, value)
+    def read(self):
+        """
+        读取气体传感器的值。
+
+        :return: (信号是否检测到, 原始 ADC 值)
+        """
+        value = self.adc.read()
+        signal = value > MQGasSensor.THRESHOLD
+        return signal, value
+
 
 class Servos:
     # VISCA命令集
@@ -1044,12 +1339,14 @@ class Servos:
         return self.send_visca_command(self.create_command("home"))
 
     def move_to_absolute_position(self, vv=10, ww=10, Y=0, Z=0):
-        return self.send_visca_command(self.create_command("absolute_position", vv, ww, Y, Z))
+        return self.send_visca_command(
+            self.create_command("absolute_position", vv, ww, Y, Z)
+        )
 
     def update_x(self, degree):
-        self.move_to_absolute_position(Y=degree,Z = self.z)
+        self.move_to_absolute_position(Y=degree, Z=self.z)
         self.y += degree
 
     def update_y(self, degree):
-        self.move_to_absolute_position(Y=self.y,Z = degree)
+        self.move_to_absolute_position(Y=self.y, Z=degree)
         self.z += degree

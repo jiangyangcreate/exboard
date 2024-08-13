@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding:utf-8
-# Version: 1.0.7
+# Version: 1.0.8
 
 def get_linux_distribution():
     try:
@@ -16,14 +16,7 @@ def get_linux_distribution():
 
 distribution_id, distribution_name = get_linux_distribution()
 
-if distribution_id is not None:
-    if distribution_id == "ubuntu":
-        # print("The system is running Ubuntu.")
-        from .jetson import *
-    elif distribution_id == "debian":
-        # print("The system is running Debian.")
-        from .rk3390 import *
-    else:
-        print(f"The system is running {distribution_name} ({distribution_id}).")
+if distribution_id is not None and distribution_id == "debian":
+    from .rk3390 import *
 else:
-    print("This is not a Linux system or /etc/os-release is not found.")
+    from .jetson import *

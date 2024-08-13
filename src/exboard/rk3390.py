@@ -179,6 +179,8 @@ class RGB:
         self.uart.write(frame)
         self.uart.flush()
 
+    def close(self):
+        self.set([(0,0,0)]*24)
 class Ultrasound:
     '''
     最大测距理论值小于343

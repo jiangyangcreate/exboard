@@ -34,10 +34,10 @@ For detailed usage instructions, refer to the interface documentation section at
 
 ### 1. Import Modules
 
-The latest version is Version: 1.0.7
+The latest version is Version: 1.0.8
 
 ```python
-sudo pip3 install exboard==1.0.7
+sudo pip3 install exboard==1.0.8
 ```
 
 When using functions, we import the specified module using the `import` keyword, or we can use `from module_name import function/class/method_name`:
@@ -205,6 +205,7 @@ Example:
 ```python
 rgb = RGB()
 rgb.set([(255, 0, 0), (0, 255, 0), (0, 0, 255)])
+rgn.close()
 ```
 
 ### Ultrasound
