@@ -54,8 +54,7 @@ sudo i2cdetect -y 7
 
 出现下面的输出表示找到了拓展板，记住这个总线编号（Jetson Orin NANO 一般是7）
 
-![1724667815898](image/README/
-1724667815898.png)
+![1724667815898](image/README/1724667815898.png)
 
 
 ### 配置I2C总线速度
