@@ -6,7 +6,9 @@ The system is Debian and automatically selects `RK3399 Pro`. In other cases, `Je
 
 Since the main control board can only control the GPIO interface by default, in order to call more complex sensors, I connected an expansion board to unlock ADC & I2C. You can also design your own or choose other expansion boards.
 
-![1721198471248](image/README/1721198471248.png)
+![exboard](image/README/exboard.webp)
+
+[Jetson Orin NANO 3D Printer Model](JetsonOrinNANO.stl)
 
 ## Features
 
