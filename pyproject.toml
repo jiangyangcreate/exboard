@@ -1,6 +1,6 @@
 [project]
 name = "exboard"
-version = "1.0.8"
+version = "1.0.10"
 authors = [
   { name="Allen", email="jiangyangcreate@gmail.com" },
 ]
