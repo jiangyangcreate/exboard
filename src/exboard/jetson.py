@@ -1130,20 +1130,20 @@ class LED:
 
 class PhotosensitiveSensor(ADC):
     def __init__(self, analog_pin=4):
-        super().__init__(analog_pin=analog_pin)
+        super().__init__(analog_pin)
 
 class SoilMoistureSensor(ADC):
     def __init__(self, analog_pin=5):
-        super().__init__(analog_pin=analog_pin)
+        super().__init__(analog_pin)
 
 
 class WaterDepthSensor(ADC):
     def __init__(self, analog_pin=7):
-        super().__init__(analog_pin=analog_pin)
+        super().__init__(analog_pin)
 
 class RotaryPotentionmeter(ADC):
     def __init__(self, analog_pin=6):
-        super().__init__(analog_pin=analog_pin)
+        super().__init__(analog_pin)
 class SoundSensor:
     THRESHOLD = 200  # 声音传感器的阈值
     
