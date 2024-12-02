@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding:utf-8
-# Version: 1.0.10
+# Version: 1.0.12
 
 def get_linux_distribution():
     try:

@@ -993,12 +993,13 @@ class Ultrasound:
     最大测距理论值小于343
     """
 
-    def __init__(self, trigger_pin=4, echo_pin=5, max_cm=None, timeout=0.1):
+    def __init__(self, trigger_pin=4, echo_pin=5, max_cm=None, timeout=0.2,debug=False):
         # set GPIO Pins
         self.trigger = GPIO(trigger_pin, "out")
         self.echo = GPIO(echo_pin, "in")
         self.max_cm = max_cm
         self.timeout = timeout  # 超时时间（秒）
+        self.debug = debug
 
     def read(self):
         # set Trigger to HIGH
@@ -1018,6 +1019,8 @@ class Ultrasound:
         while self.echo.read() == 0:
             StartTime = time.time()
             if time.time() - start_time > self.timeout:  # 检查是否超时
+                if self.debug:
+                    print("未检测到回声")
                 return 0
         # save time of arrival
         while self.echo.read() == 1:
@@ -1026,13 +1029,16 @@ class Ultrasound:
                 if StopTime - StartTime > self.max_cm * 2 / 34300:
                     return self.max_cm
             if time.time() - start_time > self.timeout:  # 检查是否超时
+                if self.debug:
+                    print("能检测到回声信号，但是滞后超时")
                 return 0
 
         # time difference between start and arrival
         TimeElapsed = StopTime - StartTime
         # multiply with the sonic speed (34300 cm/s)
         # and divide by 2, because there and back
-        distance = int(TimeElapsed * 34300) / 2
+        distance = round(TimeElapsed * 34300 / 2, 2)  # 保留2位小数
+        distance = max(distance, 1.0)  # 设置最小距离为1厘米
         time.sleep(0.01)
         return distance
 
